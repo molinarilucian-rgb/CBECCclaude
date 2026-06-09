@@ -110,10 +110,56 @@ Instead (and mirroring CBECC's own Batch Run Set approach):
 The reference DB, intake form, QA gate, and CSV converter all still apply — they
 now feed a **patch spec** instead of an XML tree.
 
-## 6. Open items (next session)
-- [ ] Determine the `CBECC-CLI25.exe` primary-function keyword (try the repo /
-      a Run Set; e.g. candidates like `analyze`, `-prj`, `runset`).
-- [ ] Open `reference_files/Doe_patched.ribd25` in CBECC and run analysis to
-      confirm the patched template simulates and produces a CF1R.
-- [ ] Auto-map intake.json + reference.db → patch.json (close the loop).
+## 6. SOLVED — headless `CBECC-CLI25.exe` compliance run ✅ (2026-06-08)
+
+The CLI's "primary function" grammar was recovered from the exe's own string
+table. The valid primary functions are:
+
+`-CompileDataModel  -CompileRuleset  -Compliance  -BatchRuns  -SFamBatchRuns`
+
+and the switches: `-sharedPath -BEMBaseTxt -BEMEnumsTxt -BEMBaseBin -RulesetTxt
+-RulesetBin -LogFile -WeatherPath -ProcessingPath -ModelInput -OptionsCSV
+-ModelInputPath -BatchRunDefs -IncludeSubdirs`.
+
+A single-family **`-Compliance`** run that produces a CF1R-PRF (verified PASS,
+LSC margin 25.7% on `1storyExample.ribd25`):
+
+```
+CBECC-CLI25.exe -Compliance
+  -ModelInput     <file.ribd25>
+  -sharedPath     <Data>                                   # CBECC 2025 Data folder
+  -BEMBaseBin     <Data>\Rulesets\CA Res 2025\CAR25 BEMBase.bin   # SFam data model
+  -RulesetBin     <Data>\Rulesets\CA Res 2025.bin                 # SFam ruleset
+  -WeatherPath    <Data>\EPW25/                            # TRAILING SLASH REQUIRED
+  -ProcessingPath <outdir>/                                # TRAILING SLASH REQUIRED
+  -LogFile        <outdir>\run.log
+```
+
+The Res data-model/ruleset filenames come straight from `CBECC-25.ini`
+(`SFamBEMFile=Rulesets\CA Res 2025\CAR25 BEMBase.bin`, `SFamRulesetFile=CA Res 2025.bin`).
+
+**Three gotchas (all cost a debug cycle):**
+1. **Naive path concatenation.** `-WeatherPath` and `-ProcessingPath` are string-
+   concatenated with the filename, so they MUST end with a separator, else CSE
+   looks for `EPW25CA_Title24_…epw` / `_clitestclitest - PreProp.cse`. Use a
+   trailing `/` (a trailing `\` gets eaten by PowerShell's native-arg quoting).
+2. **Without `-BEMBaseBin`** the run dies early with a BEMProc-can't-open error.
+3. **`SignXML(): PEM_read_bio_RSAPrivateKey() failure`** in the log is BENIGN —
+   it only means the PDF wasn't registry-signed. The CF1R PDF/XML still generate.
+
+Outputs land in `<outdir>`: `… - CF1RPRF01E-BEES.pdf` (the report),
+`… - CF1RPRF01E.xml`, `… - AnalysisResults.xml`, per-model CSE files
+(PreProp/Prop/Std…), and `run.log` with the `Analysis result: PASS/FAIL` + margin.
+
+Wrapped and verified in **`run_compliance.ps1`** (`.\run_compliance.ps1 -ModelInput <file>`).
+
+## 7. Open items (next session)
+- [x] ~~Determine the `CBECC-CLI25.exe` primary-function keyword.~~ → `-Compliance` (above).
+- [x] ~~Confirm a real `.ribd25` simulates and produces a CF1R headlessly.~~ → PASS, see §6.
+- [ ] Auto-map intake.json + reference.db → patch.json, then chain
+      `ribd_patch.py` → `run_compliance.ps1` into one command (close the loop).
 - [ ] Decide template-selection logic (stories × CZ × foundation → which prototype).
+- [ ] Parse `run.log` / `… - CF1RPRF01E.xml` to surface pass/fail + margin
+      programmatically (so the pipeline returns a structured result).
+- [ ] Investigate whether the PDF can be registry-signed, or confirm the
+      unsigned CF1R is fine for internal QA before registry submission.

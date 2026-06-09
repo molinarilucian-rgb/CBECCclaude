@@ -8,5 +8,10 @@ intake_from_csv.json
 /intake.json
 _tmpl_test/
 
+# headless compliance-run output folders (CF1R PDF/XML, CSE artifacts)
+_clitest/
+_smoketest*
+*_run/
+
 # real client files dropped for tag mapping (may contain project data)
 reference_files/*.ribd*
