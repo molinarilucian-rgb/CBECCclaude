@@ -1,0 +1,15 @@
+{
+  "$comment": "Example project profile: thin override layer over the alaniz_adu template. Corrects the climate zone (file says CZ16 but Bakersfield is CZ13) and sets project-specific values. This is the kind of small file the web form saves/loads per repeat-type project.",
+  "template_id": "alaniz_adu",
+  "code_cycle": "2025",
+  "project": {
+    "name": "Alaniz Residence",
+    "address": "1321 Hadar Rd",
+    "city": "Bakersfield",
+    "zip": "93307",
+    "climate_zone": 13,
+    "front_orientation_deg": 0,
+    "num_bedrooms": 1,
+    "conditioned_floor_area_ft2": 437
+  }
+}

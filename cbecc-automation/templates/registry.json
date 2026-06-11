@@ -1,0 +1,35 @@
+{
+  "$comment": "Catalog of prototype .ribd25 templates the automation can patch. 'path' is relative to the cbecc-automation/ folder. 'area_targets' lists the BEMProc components whose area properties receive project.conditioned_floor_area_ft2. Pick the closest archetype (climate zone + size + foundation + stories) for a project. The 2025_CZ## entries are the shipped CEC SingleFamilyPrototypes (complete, compliant) — copy the ones you use into reference_files/.",
+  "templates": [
+    {
+      "id": "alaniz_adu",
+      "label": "Alaniz ADU (CZ13, 437 ft2, slab) — loop test only",
+      "path": "reference_files/Alaniz_residence.ribd25",
+      "code_cycle": "2025",
+      "tags": { "climate_zone": 13, "stories": 1, "foundation": "slab", "size_ft2": 437, "has_adu": true },
+      "area_targets": [
+        { "type": "Zone", "name": "ADU", "prop": "FloorArea" },
+        { "type": "SlabFloor", "name": "Slab On Grade 1", "prop": "Area" }
+      ],
+      "notes": "Minimal file (no HVAC/DHW/windows/roof). Good for wiring/testing the loop, NOT for production reports."
+    },
+    {
+      "id": "cec_cz13_2100",
+      "label": "CEC prototype — CZ13 Fresno, 2100 ft2 (Proposed)",
+      "path": "reference_files/2025_CZ13_2100ft2_Prop.ribd25",
+      "code_cycle": "2025",
+      "tags": { "climate_zone": 13, "stories": 1, "foundation": "slab", "size_ft2": 2100 },
+      "area_targets": [],
+      "notes": "Shipped CEC prototype. Copy from '…\\CBECC 2025 Projects\\SingleFamilyPrototypes\\2025_CZ13_2100ft2_Prop.ribd25' into reference_files/. Confirm area_targets component names after copying (see registry README)."
+    },
+    {
+      "id": "cec_cz13_2700",
+      "label": "CEC prototype — CZ13 Fresno, 2700 ft2 (Proposed)",
+      "path": "reference_files/2025_CZ13_2700ft2_Prop.ribd25",
+      "code_cycle": "2025",
+      "tags": { "climate_zone": 13, "stories": 2, "foundation": "slab", "size_ft2": 2700 },
+      "area_targets": [],
+      "notes": "Shipped CEC prototype. Copy from SingleFamilyPrototypes into reference_files/."
+    }
+  ]
+}
