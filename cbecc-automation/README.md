@@ -178,6 +178,47 @@ and the CSV path produce a **byte-identical** `.ribd`.
 
 ---
 
+## 4b. The closed loop — run it daily
+
+The native path is fully wired: a small **project profile** + a **prototype
+template** → a real **CF1R-PRF PDF** with PASS/FAIL + margins, GUI-free.
+
+```
+profile (templates/registry.json picks the prototype)
+  → build_patch.py   profile → patch.json (CZ#→exact CBECC string; forces CF1R PDF+XML)
+  → ribd_patch.py    prototype .ribd25 + patch.json → patched .ribd25
+  → run_compliance.ps1   CBECC-CLI25.exe -Compliance (headless)
+  → parse_results.py result XML/log → verdict + LSC margins + CF1R PDF
+```
+
+**Local web app (the daily tool):**
+
+```powershell
+.\start_app.ps1        # opens http://localhost:8765
+```
+
+Pick a template + saved profile, edit the few changed fields, **Run Compliance**
+(~1 min), read PASS/FAIL + margins, **download the CF1R PDF**, then **sign off**
+(reviewer is logged to `projects`/`qa_reviews` — the human-QA gate stays
+mandatory). Same loop headless:
+
+```powershell
+.\run.ps1 pipeline.py --profile profiles\sample_profile_cz13.json
+.\run.ps1 pipeline.py --profile p.json --no-run    # patched .ribd25 only
+```
+
+Templates: the shipped **CEC prototypes** (complete + compliant, every CZ at
+2100/2700 ft2) are the best library — copy `…\SingleFamilyPrototypes\
+2025_CZ##_####ft2_Prop.ribd25` into `reference_files/` and register them (see
+`templates/README.md`). **CZ gotcha:** CBECC's CZ13 label is `"CZ13  (Fresno)"`
+(weather station), not Bakersfield; profiles use the CZ **number** and
+`build_patch.py` emits the exact string.
+
+**Verified end-to-end:** CEC CZ13 2100 ft2 prototype → CBECC exit 0 → PASS
+(LSC margins parsed) → CF1R PDF produced → QA sign-off written to the DB.
+
+---
+
 ## 5. Phased roadmap (honest)
 
 Effort = build complexity. Risk = chance it stalls / needs rework.
@@ -249,6 +290,15 @@ Start Phase 4 (deterministic parsing of structured inputs) and treat Phase 5 as 
 | `verify_cbecc.py` | Locate CBECC install + probe batch/CLI capability | 0 |
 | `PHASE0_FINDINGS.md` | **What Phase 0 found** (CLI, file format, locations, design change) | 0 |
 | `ribd_patch.py` | **Native path:** patch a real `.ribd25` BEMProc template | 2 |
-| `sample_patch.json` | Example patch (retarget CEC example → Bakersfield CZ13) | 2 |
+| `sample_patch.json` | Example patch (retarget CEC example → CZ13) | 2 |
+| `build_patch.py` | **Closes the loop:** project profile → `patch.json` (CZ#→CBECC string; forces CF1R PDF/XML) | 2 |
+| `parse_results.py` | CBECC output → verdict (PASS/FAIL + LSC margins + CF1R PDF) | 2 |
+| `pipeline.py` | **Orchestrator:** profile → build_patch → ribd_patch → run_compliance → parse_results | 2 |
+| `app.py` | **Local web app** (127.0.0.1:8765): form → run → verdict + CF1R download + QA sign-off | 2 |
+| `start_app.ps1` | Double-click launcher for `app.py` | — |
+| `run_compliance.ps1` | Headless CBECC `-Compliance` run → CF1R PDF/XML + verdict | 0 |
+| `templates/registry.json` | Catalog of prototype `.ribd25` files (tags + `area_targets`) | 2 |
+| `templates/README.md` | How to add a prototype + CZ#→string note | 2 |
+| `profiles/` | Saved per-project override profiles (enter-once-reuse) | 2 |
 | `run.ps1` | Wrapper: auto-find real Python, forward args to any script | — |
-| `reference_files/` | Holds `1storyExample.ribd25` (real CBECC template, git-ignored) | — |
+| `reference_files/` | Holds real CBECC templates incl. CEC prototypes (git-ignored) | — |

@@ -1,7 +1,7 @@
 {
-  "$comment": "Retarget the CEC 1-story example (CZ12 Sacramento) to a Bakersfield CZ13 project. Demonstrates the template-and-patch path against a real CBECC-valid .ribd25.",
+  "$comment": "Retarget the CEC 1-story example (CZ12 Sacramento) to a CZ13 project. NOTE: CBECC's CZ13 string is 'CZ13  (Fresno)' (Fresno is the CZ13 weather station), even for a Bakersfield jobsite. Demonstrates the template-and-patch path against a real CBECC-valid .ribd25.",
   "proj": {
-    "ClimateZone": "CZ13  (Bakersfield)",
+    "ClimateZone": "CZ13  (Fresno)",
     "Address": "1234 Example Ave",
     "ZipCode": 93301,
     "City": "Bakersfield, CA",

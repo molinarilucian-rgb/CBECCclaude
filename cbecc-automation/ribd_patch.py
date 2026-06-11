@@ -24,7 +24,7 @@ Usage:
 
 Patch JSON shape:
     {
-      "proj": { "ClimateZone": "CZ13  (Bakersfield)", "ZipCode": 93301,
+      "proj": { "ClimateZone": "CZ13  (Fresno)", "ZipCode": 93301,
                 "FrontOrientation": 180, "BattMaxCap": 13.5,
                 "PVWDCSysSize": "@raw:( 4.5, 0, 0, 0, 0 )", "PVWAzm[1]": 180 },
       "components": [
