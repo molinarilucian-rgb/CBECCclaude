@@ -15,3 +15,4 @@ _smoketest*
 
 # real client files dropped for tag mapping (may contain project data)
 reference_files/*.ribd*
+reference_files/*.pdf
