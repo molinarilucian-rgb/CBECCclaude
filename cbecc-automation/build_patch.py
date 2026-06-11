@@ -65,6 +65,15 @@ CZ_STRINGS = {
     16: "CZ16  (Blue Canyon)",
 }
 
+# Always-on Proj settings: ensure CBECC actually writes the CF1R deliverable
+# (PDF) and the machine-readable result (XML). Prototypes often ship with these
+# off; producing both is the entire point of the run. Override via
+# profile.project to turn off if ever needed.
+FORCE_PROJ = {
+    "ComplianceReportPDF": 1,
+    "ComplianceReportXML": 1,
+}
+
 # project-field -> Proj BEMProc key (string/number values only)
 PROJ_FIELD_MAP = {
     "address":              "Address",
@@ -111,7 +120,7 @@ def build_patch(profile, template=None, db_path=None, strict=False):
                  thin override layer yet); kept so callers can pass it through.
     """
     project = profile.get("project", {}) or {}
-    proj = {}
+    proj = dict(FORCE_PROJ)  # ensure CF1R PDF + result XML are emitted
 
     # climate zone -> exact CBECC string
     if project.get("climate_zone") is not None:

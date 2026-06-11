@@ -13,6 +13,9 @@ _clitest/
 _smoketest*
 *_run/
 
+# pipeline run artifacts (patched client files, CF1R output, logs)
+runs/
+
 # real client files dropped for tag mapping (may contain project data)
 reference_files/*.ribd*
 reference_files/*.pdf

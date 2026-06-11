@@ -1,0 +1,13 @@
+{
+  "$comment": "Profile over a complete CEC CZ13 prototype. Project-level overrides only; the prototype already carries a full, compliant building.",
+  "template_id": "cec_cz13_2100",
+  "code_cycle": "2025",
+  "project": {
+    "name": "Demo CZ13 2100",
+    "address": "100 Demo St",
+    "city": "Bakersfield",
+    "zip": "93307",
+    "climate_zone": 13,
+    "num_bedrooms": 3
+  }
+}
