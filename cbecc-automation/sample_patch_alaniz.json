@@ -1,0 +1,14 @@
+{
+  "$comment": "Demo patch against the real Alaniz residence template. Corrects the climate zone (the source file says CZ16 Blue Canyon, but the Bakersfield address / 93307 is CZ13) and bumps the ADU floor area. Proves template-and-patch works against a CBECC-saved .ribd25.",
+  "proj": {
+    "ClimateZone": "CZ13  (Bakersfield)",
+    "ZipCode": 93307,
+    "NumBedrooms": 2
+  },
+  "components": [
+    { "type": "Zone", "name": "ADU",
+      "props": { "FloorArea": 500 } },
+    { "type": "SlabFloor", "name": "Slab On Grade 1",
+      "props": { "Area": 500 } }
+  ]
+}
