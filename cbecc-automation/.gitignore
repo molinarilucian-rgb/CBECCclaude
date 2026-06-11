@@ -1,4 +1,6 @@
 # generated artifacts
+__pycache__/
+*.pyc
 reference.db
 *.ribd
 *.ribd25
