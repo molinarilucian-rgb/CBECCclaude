@@ -177,7 +177,7 @@ def _load_registry_entry(registry_path, template_id):
         return None
     if not registry_path or not os.path.exists(registry_path):
         raise PatchError(f"registry not found: {registry_path}")
-    with open(registry_path, "r", encoding="utf-8") as fh:
+    with open(registry_path, "r", encoding="utf-8-sig") as fh:  # tolerate BOM
         reg = json.load(fh)
     templates = reg.get("templates", reg)  # allow {"templates":[...]} or [...]
     for entry in templates:
@@ -196,7 +196,7 @@ def main():
     ap.add_argument("--strict", action="store_true")
     args = ap.parse_args()
 
-    with open(args.profile, "r", encoding="utf-8") as fh:
+    with open(args.profile, "r", encoding="utf-8-sig") as fh:  # tolerate BOM
         profile = json.load(fh)
 
     template_id = args.template_id or profile.get("template_id")

@@ -20,7 +20,21 @@ patch. Each entry:
 Template files themselves are **git-ignored** (`reference_files/*.ribd*`) because
 they can carry client data. The registry (this folder) is tracked.
 
-## Adding a prototype
+## Bulk: regenerate from the shipped CEC prototypes
+
+`build_registry.py` copies every `2025_CZ##_####ft2_Prop.ribd25` into
+`reference_files/` and rebuilds this `registry.json` (reading each file's real
+`ClimateZone` string + story count), preserving hand-curated entries:
+
+```powershell
+.\run.ps1 build_registry.py            # auto-detects the CBECC Projects folder
+.\run.ps1 build_registry.py --dry-run  # preview without copying/writing
+```
+
+Generated entries have empty `area_targets` (project-level patching only). Fill
+them by hand per template to allow floor-area override (see below).
+
+## Adding a single prototype manually
 
 The CBECC install ships **complete, compliant** CEC prototypes for every climate
 zone at 2100 and 2700 ft2 — the best starting library:

@@ -57,7 +57,7 @@ RUN_ID_RE = re.compile(r"^\d{8}_\d{6}_[A-Za-z0-9._-]+$")
 
 # ----------------------------------------------------------------- data helpers
 def load_registry():
-    with open(REGISTRY, "r", encoding="utf-8") as fh:
+    with open(REGISTRY, "r", encoding="utf-8-sig") as fh:  # tolerate BOM
         return json.load(fh).get("templates", [])
 
 
@@ -86,7 +86,7 @@ def load_profile(name):
     path = os.path.join(PROFILES_DIR, name + ".json")
     if not os.path.exists(path):
         return None
-    with open(path, "r", encoding="utf-8") as fh:
+    with open(path, "r", encoding="utf-8-sig") as fh:  # tolerate BOM
         return json.load(fh)
 
 

@@ -65,7 +65,7 @@ def run_pipeline(profile, *, registry_path=REGISTRY, runs_dir=RUNS_DIR,
     Raises build_patch.PatchError for bad input/missing template.
     """
     if isinstance(profile, str):
-        with open(profile, "r", encoding="utf-8") as fh:
+        with open(profile, "r", encoding="utf-8-sig") as fh:  # tolerate BOM
             profile = json.load(fh)
 
     template_id = profile.get("template_id")
